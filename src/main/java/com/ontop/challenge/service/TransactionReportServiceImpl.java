@@ -1,5 +1,6 @@
 package com.ontop.challenge.service;
 
+import com.ontop.challenge.exception.NotInfoFoundException;
 import com.ontop.challenge.model.entity.Transaction;
 import com.ontop.challenge.model.enums.ResponseCodes;
 import com.ontop.challenge.model.response.BasicResponse;
@@ -22,8 +23,7 @@ public class TransactionReportServiceImpl implements TransactionReportService{
         List<Transaction> transactions = transactionRepository.findAllByUserId(userId);
 
         if(transactions.isEmpty()) {
-            return new BasicResponse<>(ResponseCodes.NO_TRANSACTIONS_FOUND.getCode(),
-                    ResponseCodes.NO_TRANSACTIONS_FOUND.getMessage());
+            throw new NotInfoFoundException("No transactions found for user id: " + userId);
         }
 
         List<TransactionReportResponse> response = transactions.stream().map(transaction -> {

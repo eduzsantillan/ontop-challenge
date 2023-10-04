@@ -21,6 +21,8 @@ public class WalletTransactionRequest{
         this.amount = inputAmount - fee * inputAmount;
     }
 
+
+
     public String getUserId() {
         return userId;
     }

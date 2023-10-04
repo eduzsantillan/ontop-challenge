@@ -11,7 +11,8 @@ public class BankAccountValidation {
                 request.getLastName()==null ||
                 request.getRoutingNumber()==null ||
                 request.getAccountNumber()==null ||
-                request.getNationalId()==null){
+                request.getNationalId()==null ||
+                 request.getUserId()==null){
             throw new FieldsRequiredException("Some of the fields are null");
         }
 
@@ -19,7 +20,8 @@ public class BankAccountValidation {
                 request.getLastName().isEmpty() ||
                 request.getRoutingNumber().isEmpty() ||
                 request.getAccountNumber().isEmpty() ||
-                request.getNationalId().isEmpty()){
+                request.getNationalId().isEmpty() ||
+                request.getUserId().isEmpty()){
             throw new FieldsRequiredException("All fields are required");
         }
         return true;

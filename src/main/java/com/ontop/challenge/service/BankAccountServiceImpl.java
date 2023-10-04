@@ -5,17 +5,14 @@ import com.ontop.challenge.model.entity.BankAccount;
 import com.ontop.challenge.model.request.BankAccountRequest;
 import com.ontop.challenge.repository.BankAccountRepository;
 import com.ontop.challenge.utils.BankAccountValidation;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-@Service
+@AllArgsConstructor
+@Service()
 public class BankAccountServiceImpl implements BankAccountService {
 
     private final BankAccountRepository bankAccountRepository;
-
-    public BankAccountServiceImpl(BankAccountRepository bankAccountRepository) {
-        this.bankAccountRepository = bankAccountRepository;
-    }
-
 
     @Override
     public void submitBankAccount(BankAccountRequest request) {

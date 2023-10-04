@@ -9,6 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface WalletRepository extends MongoRepository<Wallet, ObjectId> {
-
     Optional<Wallet> findByUserId(String userId);
 }
