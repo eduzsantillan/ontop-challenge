@@ -8,6 +8,7 @@ import com.ontop.challenge.model.entity.BankAccount;
 import com.ontop.challenge.model.entity.Transaction;
 import com.ontop.challenge.model.entity.Wallet;
 import com.ontop.challenge.model.enums.ResponseCodes;
+import com.ontop.challenge.model.request.PaymentRequest;
 import com.ontop.challenge.model.request.TransactionUpdateRequest;
 import com.ontop.challenge.model.request.WalletTransactionRequest;
 import com.ontop.challenge.model.response.CreateWalletTransactionRequest;
@@ -15,21 +16,21 @@ import com.ontop.challenge.model.response.PaymentProviderResponse;
 import com.ontop.challenge.model.response.WalletTransactionResponse;
 import com.ontop.challenge.repository.TransactionRepository;
 import com.ontop.challenge.repository.WalletRepository;
+import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 
-import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class WalletServiceTest {
@@ -46,8 +47,7 @@ public class WalletServiceTest {
     private CreatePaymentEndpoint createPaymentEndpoint;
     @Mock
     private BankAccountServiceImpl bankAccountService;
-    @Mock
-    private RestTemplate restTemplate;
+
 
     @InjectMocks
     private WalletServiceImpl walletService;
@@ -58,6 +58,7 @@ public class WalletServiceTest {
     @Test
     void processTransferTestFailed_InvalidAmount (){
         WalletTransactionRequest request = mockWalletTransactionZeroRequest();
+        when(bankAccountService.getBankAccountByBankAccountId(request.getBankAccountId())).thenReturn(mockBankAccount());
         assertThrows(AmountLessOrEqualsThanZeroException.class, () -> {
             walletService.processTransfer(request);
         });
@@ -68,6 +69,7 @@ public class WalletServiceTest {
     @Test
     void processTransferTestFailed_InvalidBalance (){
         WalletTransactionRequest request = mockWalletTransactionRequest();
+        when(bankAccountService.getBankAccountByBankAccountId(request.getBankAccountId())).thenReturn(mockBankAccount());
         when(getBalanceEndpoint.invoke(Mockito.anyString())).thenReturn(0.0);
         assertThrows(NotEnoughBalanceException.class, () -> {
             walletService.processTransfer(request);
@@ -77,7 +79,8 @@ public class WalletServiceTest {
     @Test
     void processTransferTestFailed_ExternalServerError (){
         WalletTransactionRequest request = mockWalletTransactionRequest();
-        when(getBalanceEndpoint.invoke(request.getUserId())).thenThrow(ExternalServerErrorException.class);
+        when(bankAccountService.getBankAccountByBankAccountId(request.getBankAccountId())).thenReturn(mockBankAccount());
+        when(getBalanceEndpoint.invoke(mockBankAccount().getUserId())).thenThrow(ExternalServerErrorException.class);
         assertThrows(ExternalServerErrorException.class, () -> {
             walletService.processTransfer(request);
         });
@@ -86,8 +89,7 @@ public class WalletServiceTest {
     @Test
     void processTransferTestFailed_NoBankAccountFound(){
         WalletTransactionRequest request = mockWalletTransactionRequest();
-        when(getBalanceEndpoint.invoke(request.getUserId())).thenReturn(10000.0);
-        when(bankAccountService.getBankAccountByUserId(request.getUserId())).thenThrow(NotInfoFoundException.class);
+        when(bankAccountService.getBankAccountByBankAccountId(request.getBankAccountId())).thenThrow(NotInfoFoundException.class);
         assertThrows(NotInfoFoundException.class, () -> {
             walletService.processTransfer(request);
         });
@@ -96,8 +98,8 @@ public class WalletServiceTest {
     @Test
     void processTransferTestFailed_ExternalServerErrorCreatingWalletTransaction(){
         WalletTransactionRequest request = mockWalletTransactionRequest();
-        when(getBalanceEndpoint.invoke(request.getUserId())).thenReturn(10000.0);
-        when(bankAccountService.getBankAccountByUserId(request.getUserId())).thenReturn(null);
+        when(bankAccountService.getBankAccountByBankAccountId(request.getBankAccountId())).thenReturn(mockBankAccount());
+        when(getBalanceEndpoint.invoke(mockBankAccount().getUserId())).thenReturn(10000.0);
         when(createWalletTransactionEndpoint.invoke(Mockito.any())).thenThrow(ExternalServerErrorException.class);
         assertThrows(ExternalServerErrorException.class, () -> {
             walletService.processTransfer(request);
@@ -109,9 +111,10 @@ public class WalletServiceTest {
         WalletTransactionRequest request = mockWalletTransactionRequest();
         CreateWalletTransactionRequest createWalletTransactionRequest = mockCreateWalletTransactionRequest(request);
 
-        when(getBalanceEndpoint.invoke(request.getUserId())).thenReturn(10000.0);
-        when(bankAccountService.getBankAccountByUserId(request.getUserId())).thenReturn(mockBankAccount());
+        when(bankAccountService.getBankAccountByBankAccountId(request.getBankAccountId())).thenReturn(mockBankAccount());
+        when(getBalanceEndpoint.invoke(mockBankAccount().getUserId())).thenReturn(10000.0);
         when(createWalletTransactionEndpoint.invoke(createWalletTransactionRequest)).thenReturn(mockWalletTransactionResponse());
+        when(walletRepository.findByUserId(mockBankAccount().getUserId())).thenReturn(Optional.of(mockWalletFromBD()));
         when(createPaymentEndpoint.invoke(Mockito.any())).thenThrow(PaymentProviderApiException.class);
 
         assertThat(walletService.processTransfer(request).getStatus()).
@@ -125,11 +128,10 @@ public class WalletServiceTest {
         WalletTransactionRequest request = mockWalletTransactionRequest();
         CreateWalletTransactionRequest createWalletTransactionRequest = mockCreateWalletTransactionRequest(request);
 
-        when(getBalanceEndpoint.invoke(request.getUserId())).thenReturn(10000.0);
-        when(bankAccountService.getBankAccountByUserId(request.getUserId())).thenReturn(mockBankAccount());
+        when(bankAccountService.getBankAccountByBankAccountId(request.getBankAccountId())).thenReturn(mockBankAccount());
+        when(getBalanceEndpoint.invoke(mockBankAccount().getUserId())).thenReturn(10000.0);
         when(createWalletTransactionEndpoint.invoke(createWalletTransactionRequest)).thenReturn(mockWalletTransactionResponse());
-        when(createPaymentEndpoint.invoke(Mockito.any())).thenReturn(mockPaymentProviderResponse());
-        when(walletRepository.findByUserId(request.getUserId())).thenReturn(Optional.empty());
+        when(walletRepository.findByUserId(mockBankAccount().getUserId())).thenReturn(Optional.empty());
 
         assertThrows(NotInfoFoundException.class, () -> {
             walletService.processTransfer(request);
@@ -141,11 +143,11 @@ public class WalletServiceTest {
         WalletTransactionRequest request = mockWalletTransactionRequest();
         CreateWalletTransactionRequest createWalletTransactionRequest = mockCreateWalletTransactionRequest(request);
 
-        when(getBalanceEndpoint.invoke(request.getUserId())).thenReturn(10000.0);
-        when(bankAccountService.getBankAccountByUserId(request.getUserId())).thenReturn(mockBankAccount());
-        when(createWalletTransactionEndpoint.invoke(createWalletTransactionRequest)).thenReturn(mockWalletTransactionResponse());
-        when(createPaymentEndpoint.invoke(Mockito.any())).thenReturn(mockPaymentProviderResponse());
-        when(walletRepository.findByUserId(request.getUserId())).thenReturn(Optional.of(mockWalletFromBD()));
+        doReturn(mockBankAccount()).when(bankAccountService).getBankAccountByBankAccountId(request.getBankAccountId());
+        doReturn(10000.0).when(getBalanceEndpoint).invoke(mockBankAccount().getUserId());
+        doReturn(mockWalletTransactionResponse()).when(createWalletTransactionEndpoint).invoke(createWalletTransactionRequest);
+        doReturn(Optional.of(mockWalletFromBD())).when(walletRepository).findByUserId(mockBankAccount().getUserId());
+        doReturn(mockPaymentProviderResponse()).when(createPaymentEndpoint).invoke(Mockito.any());
 
         assertThat(walletService.processTransfer(request).getStatus()).
                 isEqualTo(ResponseCodes.SUCCESS.getCode());
@@ -194,15 +196,15 @@ public class WalletServiceTest {
     }
 
     private static CreateWalletTransactionRequest mockCreateWalletTransactionRequest(WalletTransactionRequest request) {
-        CreateWalletTransactionRequest createWalletTransactionRequest = new CreateWalletTransactionRequest(request.getUserId(), request.getAmount());
-        createWalletTransactionRequest.setUserId(request.getUserId());
+        CreateWalletTransactionRequest createWalletTransactionRequest = new CreateWalletTransactionRequest(request.getBankAccountId(), request.getAmount());
+        createWalletTransactionRequest.setUserId(request.getBankAccountId());
         createWalletTransactionRequest.setAmount(request.getAmount());
         return createWalletTransactionRequest;
     }
 
     private static Wallet mockWalletFromBD() {
         Wallet wallet = new Wallet();
-        wallet.setId(Mockito.any());
+        wallet.setId(new ObjectId());
         wallet.setBalance(100.0);
         wallet.setUserId("123456789");
         wallet.setCurrency("USD");
@@ -211,7 +213,7 @@ public class WalletServiceTest {
 
     private static Transaction mockTransactionFromBD() {
         Transaction transaction = new Transaction();
-        transaction.setId(Mockito.any());
+        transaction.setId(new ObjectId());
         transaction.setAmount(100.0);
         transaction.setFee(0.1);
         return transaction;
@@ -253,13 +255,37 @@ public class WalletServiceTest {
         BankAccount bankAccount = new BankAccount();
         bankAccount.setId("123456789");
         bankAccount.setAccountNumber("123456789");
-        bankAccount.setUserId("username");
+        bankAccount.setUserId("123456789");
         bankAccount.setFirstName("MockName");
         bankAccount.setLastName("MockLastName");
         bankAccount.setRoutingNumber("1234567");
         bankAccount.setNationalId("per-1234");
         bankAccount.setCurrency("USD");
+        bankAccount.setBankAccountId("123456789");
         return bankAccount;
+    }
+
+    private static PaymentRequest buildPaymentRequest(WalletTransactionRequest request, BankAccount bankAccount) {
+        PaymentRequest paymentRequest =new PaymentRequest();
+        PaymentRequest.PaymentSource paymentSource = new PaymentRequest.PaymentSource();
+        PaymentRequest.SourceInfo sourceInfo = new PaymentRequest.SourceInfo();
+        PaymentRequest.Account accountSource = new PaymentRequest.Account();
+        accountSource.setAccountNumber("SOURCE_ACCOUNT");
+        accountSource.setRoutingNumber("SOURCE_ROUTING");
+        paymentSource.setSourceInformation(sourceInfo);
+        paymentSource.setAccount(accountSource);
+
+        PaymentRequest.PaymentDestination paymentDestination = new PaymentRequest.PaymentDestination();
+        PaymentRequest.Account accountDestination = new PaymentRequest.Account();
+        accountDestination.setAccountNumber(bankAccount.getAccountNumber());
+        accountDestination.setRoutingNumber(bankAccount.getRoutingNumber());
+        paymentDestination.setName(bankAccount.getFirstName() + " " + bankAccount.getLastName());
+        paymentDestination.setAccount(accountDestination);
+
+        paymentRequest.setAmount(request.getAmount());
+        paymentRequest.setSource(paymentSource);
+        paymentRequest.setDestination(paymentDestination);
+        return paymentRequest;
     }
 
 }

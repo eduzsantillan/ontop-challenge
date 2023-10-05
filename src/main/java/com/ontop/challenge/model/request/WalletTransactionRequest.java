@@ -4,18 +4,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class WalletTransactionRequest{
 
-
-
-    private final String userId;
+    private final String bankAccountId;
     private final double inputAmount;
-    private double fee;
+    private final double fee;
 
     @JsonIgnore
     private final double amount;
 
 
-    public WalletTransactionRequest(String userId, double inputAmount, double fee) {
-        this.userId = userId;
+    public WalletTransactionRequest(String bankAccountId, double inputAmount, double fee) {
+        this.bankAccountId = bankAccountId;
         this.inputAmount = inputAmount;
         this.fee = fee;
         this.amount = inputAmount - fee * inputAmount;
@@ -23,8 +21,8 @@ public class WalletTransactionRequest{
 
 
 
-    public String getUserId() {
-        return userId;
+    public String getBankAccountId() {
+        return bankAccountId;
     }
     public double getAmount() {
         return amount;

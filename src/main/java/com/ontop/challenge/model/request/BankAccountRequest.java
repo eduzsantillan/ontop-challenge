@@ -3,9 +3,12 @@ package com.ontop.challenge.model.request;
 import com.ontop.challenge.model.entity.BankAccount;
 import lombok.Data;
 
+import java.util.UUID;
+
 @Data
 public class BankAccountRequest {
     private String userId;
+    private String bankAccountId;
     private String firstName;
     private String lastName;
     private String routingNumber;
@@ -21,6 +24,7 @@ public class BankAccountRequest {
         bankAccount.setRoutingNumber(this.routingNumber);
         bankAccount.setAccountNumber(this.accountNumber);
         bankAccount.setNationalId(this.nationalId);
+        bankAccount.setBankAccountId(UUID.randomUUID().toString());
         return bankAccount;
     }
 

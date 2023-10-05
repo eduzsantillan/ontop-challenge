@@ -22,9 +22,9 @@ public class BankAccountServiceImpl implements BankAccountService {
     }
 
     @Override
-    public BankAccount getBankAccountByUserId(String userId) {
-        return bankAccountRepository.findByUserId(userId).orElseThrow(
-                () -> new NotInfoFoundException("No bank account found for user id: " + userId));
+    public BankAccount getBankAccountByBankAccountId(String bankAccountId) {
+        return bankAccountRepository.findByBankAccountId(bankAccountId).orElseThrow(
+                () -> new NotInfoFoundException("No bank account found for account id: " + bankAccountId));
     }
 
 

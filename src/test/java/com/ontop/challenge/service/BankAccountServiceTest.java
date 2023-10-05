@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
@@ -30,7 +31,7 @@ public class BankAccountServiceTest {
     void testSubmitBankAccountOK() {
         BankAccountRequest request = mockBankAccountRequest();
         bankAccountService.submitBankAccount(request);
-        verify(bankAccountRepository,times(1)).save(request.toEntity());
+        verify(bankAccountRepository,times(1)).save(Mockito.any(BankAccount.class));
     }
 
     @Test
@@ -54,19 +55,17 @@ public class BankAccountServiceTest {
 
     @Test
     public void testGetBankAccountByUserId() {
-        String userId = "user123";
         BankAccount bankAccount = mockBankAccountRequest().toEntity();
-        when(bankAccountRepository.findByUserId(userId)).thenReturn(Optional.of(bankAccount));
-        BankAccount result = bankAccountService.getBankAccountByUserId(userId);
+        when(bankAccountRepository.findByBankAccountId(bankAccount.getBankAccountId())).thenReturn(Optional.of(bankAccount));
+        BankAccount result = bankAccountService.getBankAccountByBankAccountId(bankAccount.getBankAccountId());
 
         assertThat(result).isNotNull();
     }
 
     @Test
     public void testGetBankAccountByUserIdNotFound() {
-        String userId = "user123";
-        when(bankAccountRepository.findByUserId(userId)).thenReturn(Optional.empty());
-        assertThrows(NotInfoFoundException.class, () -> bankAccountService.getBankAccountByUserId(userId));
+        when(bankAccountRepository.findByBankAccountId(Mockito.anyString())).thenReturn(Optional.empty());
+        assertThrows(NotInfoFoundException.class, () -> bankAccountService.getBankAccountByBankAccountId(Mockito.anyString()));
     }
 
 

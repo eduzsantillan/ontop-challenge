@@ -18,6 +18,7 @@ public class Transaction {
     private ObjectId id;
     private String walletTransactionId;
     private String providerTransactionId;
+    private String bankAccountId;
     private String userId;
     private double inputAmount;
     private double fee;
@@ -31,7 +32,7 @@ public class Transaction {
 
     public void buildTransaction(String transactionId, String userId,
                                  double amount, double fee, double inputAmount,
-                                 String typeAmount, String currency, String typeTransaction) {
+                                 String typeAmount, String currency, String typeTransaction, String bankAccountId) {
         this.walletTransactionId = transactionId;
         this.userId = userId;
         this.typeAmount= typeAmount;
@@ -40,6 +41,7 @@ public class Transaction {
         this.amount = amount;
         this.currency = currency;
         this.typeTransaction = typeTransaction;
+        this.bankAccountId = bankAccountId;
         this.createdAt = new Date();
         this.updatedAt = new Date();
     }

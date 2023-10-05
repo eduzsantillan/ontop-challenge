@@ -9,5 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface BankAccountRepository extends MongoRepository<BankAccount, String> {
-    Optional<BankAccount> findByUserId(String userId);
+    Optional<BankAccount> findByBankAccountId(String bankAccountId);
 }

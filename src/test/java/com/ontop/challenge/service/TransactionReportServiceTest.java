@@ -3,13 +3,15 @@ package com.ontop.challenge.service;
 import com.ontop.challenge.exception.NotInfoFoundException;
 import com.ontop.challenge.model.entity.Transaction;
 import com.ontop.challenge.model.enums.ResponseCodes;
-import com.ontop.challenge.repository.BankAccountRepository;
 import com.ontop.challenge.repository.TransactionRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -32,19 +34,43 @@ public class TransactionReportServiceTest {
     @Test
     void testGetTransactionReportOK() {
         List<Transaction> transactions = List.of(mockTransaction());
-        String userId = "userId";
-        when(transactionRepository.findAllByUserId(userId)).thenReturn(transactions);
-        assertThat(transactionReportService.fetchTransactionReport(userId).getStatus()).isEqualTo(ResponseCodes.SUCCESS.getCode());
+        String accountId = "accountId";
+        Double amount = 0.0;
+        Date startDate = null;
+        Date endDate = null;
+        int page = 0;
+        int size = 10;
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by("updatedAt").descending());
+        when(transactionRepository.findAllByBankAccountId(accountId,pageable)).thenReturn(transactions);
+        assertThat(transactionReportService.fetchTransactionReport(accountId,
+                amount,
+                startDate,
+                endDate,
+                page,
+                size).getStatus()).isEqualTo(ResponseCodes.SUCCESS.getCode());
     }
     @Test
     void testGetTransactionReportFailed_NoInfoFound() {
         List<Transaction> transactions = new ArrayList<>();
-        String userId = "userId";
-        when(transactionRepository.findAllByUserId(userId)).thenReturn(transactions);
+        String accountId = "accountId";
+        Double amount = 0.0;
+        Date startDate = null;
+        Date endDate = null;
+        int page = 0;
+        int size = 10;
+        Pageable pageable = PageRequest.of(page, size, Sort.by("updatedAt").descending());
+        when(transactionRepository.findAllByBankAccountId(accountId,pageable)).thenReturn(transactions);
         assertThrows(NotInfoFoundException.class, () -> {
-            transactionReportService.fetchTransactionReport(userId);
+            transactionReportService.fetchTransactionReport(accountId,
+                    amount,
+                    startDate,
+                    endDate,
+                    page,
+                    size);
         });
     }
+
 
 
     private static Transaction mockTransaction()

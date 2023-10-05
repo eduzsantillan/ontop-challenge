@@ -6,7 +6,8 @@ import com.ontop.challenge.model.request.BankAccountRequest;
 public interface BankAccountService {
 
     void submitBankAccount(BankAccountRequest request);
-    BankAccount getBankAccountByUserId(String userId);
+    BankAccount getBankAccountByBankAccountId(String bankAccountId);
+
 
 
 

@@ -34,7 +34,7 @@ public class BankAccountRepositoryTest {
 
     @Test
     void testFindByUserIdNotFound() {
-        BankAccount bankAccount = bankAccountRepository.findByUserId("NotRegisteredId").orElse(null);
+        BankAccount bankAccount = bankAccountRepository.findByBankAccountId("NotRegisteredId").orElse(null);
         assertNull(bankAccount);
     }
 

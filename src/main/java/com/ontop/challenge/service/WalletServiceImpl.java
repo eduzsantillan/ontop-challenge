@@ -48,49 +48,52 @@ public class WalletServiceImpl implements WalletService{
     public BasicResponse<Transaction> processTransfer(WalletTransactionRequest request) {
         Transaction transaction = new Transaction();
         try {
-            logger.info("Starting process transfer for user id: {}", request.getUserId());
-            logger.info("1.Validating balance ");
+            logger.info("Starting process transfer for user account id: {}", request.getBankAccountId());
+
+            logger.info("1. Validating bank account");
+            BankAccount bankAccount = bankAccountService.getBankAccountByBankAccountId(request.getBankAccountId());
+            String userId = bankAccount.getUserId();
+
+            logger.info("2.Validating balance ");
             if (request.getAmount() <= 0){
                 throw new AmountLessOrEqualsThanZeroException("Calculated amount must be greater than 0");
             }
-            double currentBalance = getBalanceEndpoint.invoke(request.getUserId());
-            validateBalance(currentBalance, request.getAmount());
-
-            logger.info("2. Validating bank account");
-            BankAccount bankAccount = bankAccountService.getBankAccountByUserId(request.getUserId());
+            double currentBalance = getBalanceEndpoint.invoke(userId);
+            validateBalance(currentBalance, request.getInputAmount());
 
             logger.info("3. Creating wallet transaction");
-            CreateWalletTransactionRequest createWalletTransactionRequest = new CreateWalletTransactionRequest(request.getUserId(),request.getAmount());
+            CreateWalletTransactionRequest createWalletTransactionRequest = new CreateWalletTransactionRequest(userId,request.getAmount());
             String walletTransactionId = createWalletTransactionEndpoint.invoke(createWalletTransactionRequest)
                     .getWalletTransactionId();
 
-            logger.info("4. Creating transaction in database");
+            logger.info("4. Updating balance in wallet");
+            Wallet wallet = walletRepository.findByUserId(userId).orElseThrow(
+                    () -> new NotInfoFoundException("No wallet found for user id: " + userId));
+            wallet.setBalance(currentBalance - request.getAmount());
+            walletRepository.save(wallet);
+
+            logger.info("5. Creating transaction in database");
             transaction.buildTransaction(walletTransactionId,
-                    request.getUserId(),
+                    userId,
                     request.getAmount(),
                     request.getFee(),
                     request.getInputAmount(),
                     TYPE_AMOUNT_OUTCOME,
                     DEFAULT_CURRENCY,
-                    TransactionTypes.WITHDRAWAL.getType());
+                    TransactionTypes.WITHDRAWAL.getType(),
+                    request.getBankAccountId());
             transactionRepository.save(transaction);
 
-            logger.info("5. Creating payment in provider");
+            logger.info("6. Creating payment in provider");
             PaymentRequest paymentRequest = buildPaymentRequest(request, bankAccount);
             PaymentProviderResponse paymentProviderResponse = createPaymentEndpoint.invoke(paymentRequest);
 
-            logger.info("6. Updating transaction in database");
+            logger.info("7. Updating transaction in database");
             transaction.setProviderTransactionId(paymentProviderResponse.getPaymentInfo().getId());
             transaction.setStatus(paymentProviderResponse.getRequestInfo().getStatus());
             transactionRepository.save(transaction);
 
-            logger.info("7. Updating balance in wallet");
-            Wallet wallet = walletRepository.findByUserId(request.getUserId()).orElseThrow(
-                    () -> new NotInfoFoundException("No wallet found for user id: " + request.getUserId()));
-            wallet.setBalance(currentBalance - request.getAmount());
-            walletRepository.save(wallet);
-
-            logger.info("Transaction completed for user id: {}", request.getUserId());
+            logger.info("Transaction completed for user account with id: {}", request.getBankAccountId());
             return new BasicResponse<>(ResponseCodes.SUCCESS.getCode(),
                     ResponseCodes.SUCCESS.getMessage(),
                     transaction);
@@ -128,8 +131,8 @@ public class WalletServiceImpl implements WalletService{
         return paymentRequest;
     }
 
-    public void validateBalance(double currentBalance, double amount){
-        if (currentBalance < amount ){
+    public void validateBalance(double currentBalance, double inputAmount) {
+        if (currentBalance < inputAmount ){
             throw new NotEnoughBalanceException("Insufficient funds");
         }
     }
@@ -145,7 +148,8 @@ public class WalletServiceImpl implements WalletService{
                 blueprintTransaction.getInputAmount(),
                 TYPE_AMOUNT_INCOME,
                 DEFAULT_CURRENCY,
-                TransactionTypes.REFUND.getType());
+                TransactionTypes.REFUND.getType()
+                ,blueprintTransaction.getBankAccountId());
         transaction.setStatus(PROVIDER_STATUS_REFUND);
         transactionRepository.save(transaction);
         logger.info("Refund process completed for user id: {}", blueprintTransaction.getUserId());
