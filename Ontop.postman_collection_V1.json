@@ -1,0 +1,1004 @@
+{
+	"info": {
+		"_postman_id": "a46651d1-7ce8-4929-845d-a2ab801a3979",
+		"name": "Ontop",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19256071",
+		"_collection_link": "https://winter-flare-479383.postman.co/workspace/My-Workspace~16cc2e42-6a56-4631-80cd-5e5b0f4c37bd/collection/19256071-a46651d1-7ce8-4929-845d-a2ab801a3979?action=share&source=collection_link&creator=19256071"
+	},
+	"item": [
+		{
+			"name": "Save BankAccount",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"userId\" : \"900\",\n\"firstName\" : \"Harry\",\n\"lastName\" : \"Kane\",\n\"routingNumber\" : \"123456\",\n\"accountNumber\" : \"12345678\",\n\"nationalId\" : \"73267572\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://ontop-wallet-api.us-east-2.elasticbeanstalk.com/api/bankaccount",
+					"protocol": "http",
+					"host": [
+						"ontop-wallet-api",
+						"us-east-2",
+						"elasticbeanstalk",
+						"com"
+					],
+					"path": [
+						"api",
+						"bankaccount"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "201 Created",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"userId\" : \"100\",\n\"firstName\" : \"Paolo\",\n\"lastName\" : \"Guerrero\",\n\"routingNumber\" : \"123456\",\n\"accountNumber\" : \"12345678\",\n\"nationalId\" : \"73267572\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://ontop-wallet-api.us-east-2.elasticbeanstalk.com/api/bankaccount",
+							"protocol": "http",
+							"host": [
+								"ontop-wallet-api",
+								"us-east-2",
+								"elasticbeanstalk",
+								"com"
+							],
+							"path": [
+								"api",
+								"bankaccount"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain;charset=UTF-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "22"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 05 Oct 2023 06:12:32 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "Bank account submitted"
+				},
+				{
+					"name": "400 Fields null",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"userId\" : \"100\",\n\"firstName\" : \"Paolo\",\n\"lastName\" : \"Guerrero\",\n\"routingNumber\" : \"123456\",\n\"_comment\" : \"No account number (null)\",\n\"nationalId\" : \"73267572\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://ontop-wallet-api.us-east-2.elasticbeanstalk.com/api/bankaccount",
+							"protocol": "http",
+							"host": [
+								"ontop-wallet-api",
+								"us-east-2",
+								"elasticbeanstalk",
+								"com"
+							],
+							"path": [
+								"api",
+								"bankaccount"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain;charset=UTF-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "27"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 05 Oct 2023 06:16:46 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "Some of the fields are null"
+				},
+				{
+					"name": "400 Fields empty",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"userId\" : \"100\",\n\"firstName\" : \"Paolo\",\n\"lastName\" : \"Guerrero\",\n\"routingNumber\" : \"\",\n\"accountNumber\" : \"\",\n\"nationalId\" : \"73267572\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://ontop-wallet-api.us-east-2.elasticbeanstalk.com/api/bankaccount",
+							"protocol": "http",
+							"host": [
+								"ontop-wallet-api",
+								"us-east-2",
+								"elasticbeanstalk",
+								"com"
+							],
+							"path": [
+								"api",
+								"bankaccount"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain;charset=UTF-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "23"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 05 Oct 2023 06:17:19 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "All fields are required"
+				}
+			]
+		},
+		{
+			"name": "Transfer Request",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"bankAccountId\": \"f0da7777-8f44-1111-a396-fc74a8f09611\",\n    \"inputAmount\" : 800,\n    \"fee\": 0.10\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://ontop-wallet-api.us-east-2.elasticbeanstalk.com/api/wallet/transfer",
+					"protocol": "http",
+					"host": [
+						"ontop-wallet-api",
+						"us-east-2",
+						"elasticbeanstalk",
+						"com"
+					],
+					"path": [
+						"api",
+						"wallet",
+						"transfer"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "200 OK",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"bankAccountId\": \"f0da9494-8f44-42f2-a396-fc74a8c08331\",\n    \"inputAmount\" : 500,\n    \"fee\": 0.10\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://ontop-wallet-api.us-east-2.elasticbeanstalk.com/api/wallet/transfer",
+							"protocol": "http",
+							"host": [
+								"ontop-wallet-api",
+								"us-east-2",
+								"elasticbeanstalk",
+								"com"
+							],
+							"path": [
+								"api",
+								"wallet",
+								"transfer"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 05 Oct 2023 07:27:15 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"00\",\n    \"message\": \"Success\",\n    \"data\": {\n        \"id\": {\n            \"timestamp\": 1696490820,\n            \"date\": \"2023-10-05T07:27:00.000+00:00\"\n        },\n        \"walletTransactionId\": \"80438\",\n        \"providerTransactionId\": \"1ee8901d-e054-4a8b-a3e0-95bc2c6b880b\",\n        \"bankAccountId\": \"f0da9494-8f44-42f2-a396-fc74a8c08331\",\n        \"userId\": \"400\",\n        \"inputAmount\": 500,\n        \"fee\": 0.1,\n        \"amount\": 450,\n        \"typeTransaction\": \"WITHDRAWAL\",\n        \"typeAmount\": \"01\",\n        \"currency\": \"USD\",\n        \"status\": \"Processing\",\n        \"createdAt\": \"2023-10-05T07:26:59.809+00:00\",\n        \"updatedAt\": \"2023-10-05T07:26:59.809+00:00\"\n    }\n}"
+				},
+				{
+					"name": "400 Negative amount",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"bankAccountId\": \"f0da9494-8f44-42f2-a396-fc74a8c08331\",\n    \"inputAmount\" : 0,\n    \"fee\": 0.10\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://ontop-wallet-api.us-east-2.elasticbeanstalk.com/api/wallet/transfer",
+							"protocol": "http",
+							"host": [
+								"ontop-wallet-api",
+								"us-east-2",
+								"elasticbeanstalk",
+								"com"
+							],
+							"path": [
+								"api",
+								"wallet",
+								"transfer"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 05 Oct 2023 07:30:37 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"01\",\n    \"message\": \"Amount must be positive\",\n    \"data\": null\n}"
+				},
+				{
+					"name": "400 Not funds",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"bankAccountId\": \"f0da9494-8f44-42f2-a396-fc74a8c08331\",\n    \"inputAmount\" : 2600,\n    \"fee\": 0.10\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://ontop-wallet-api.us-east-2.elasticbeanstalk.com/api/wallet/transfer",
+							"protocol": "http",
+							"host": [
+								"ontop-wallet-api",
+								"us-east-2",
+								"elasticbeanstalk",
+								"com"
+							],
+							"path": [
+								"api",
+								"wallet",
+								"transfer"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 05 Oct 2023 07:36:23 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"02\",\n    \"message\": \"Insufficient Balance\",\n    \"data\": null\n}"
+				},
+				{
+					"name": "500 External Server Error",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"bankAccountId\": \"f0da7777-8f44-42f2-a396-fc74a8f09611\",\n    \"inputAmount\" : 800,\n    \"fee\": 0.10\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://ontop-wallet-api.us-east-2.elasticbeanstalk.com/api/wallet/transfer",
+							"protocol": "http",
+							"host": [
+								"ontop-wallet-api",
+								"us-east-2",
+								"elasticbeanstalk",
+								"com"
+							],
+							"path": [
+								"api",
+								"wallet",
+								"transfer"
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 05 Oct 2023 07:41:19 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"07\",\n    \"message\": \"com.ontop.challenge.exception.ExternalServerErrorException: Error creating wallet transaction, message obtained: org.springframework.web.client.HttpServerErrorException$InternalServerError: 500 Internal Server Error: \\\"{<EOL>  \\\"code\\\": \\\"GENERIC_ERROR\\\",<EOL>  \\\"message\\\": \\\"something bad happened\\\"<EOL>}\\\"\",\n    \"data\": null\n}"
+				},
+				{
+					"name": "404 No info found",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"bankAccountId\": \"2023-1000\",\n    \"inputAmount\" : 800,\n    \"fee\": 0.10\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://ontop-wallet-api.us-east-2.elasticbeanstalk.com/api/wallet/transfer",
+							"protocol": "http",
+							"host": [
+								"ontop-wallet-api",
+								"us-east-2",
+								"elasticbeanstalk",
+								"com"
+							],
+							"path": [
+								"api",
+								"wallet",
+								"transfer"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 05 Oct 2023 07:42:49 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"03\",\n    \"message\": \"No info found for user\",\n    \"data\": null\n}"
+				},
+				{
+					"name": "200 External Provider rejected request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"bankAccountId\": \"2023-0005\",\n    \"inputAmount\" : 800,\n    \"fee\": 0.10\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://ontop-wallet-api.us-east-2.elasticbeanstalk.com/api/wallet/transfer",
+							"protocol": "http",
+							"host": [
+								"ontop-wallet-api",
+								"us-east-2",
+								"elasticbeanstalk",
+								"com"
+							],
+							"path": [
+								"api",
+								"wallet",
+								"transfer"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 05 Oct 2023 07:44:01 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"07\",\n    \"message\": \"com.ontop.challenge.exception.PaymentProviderApiException: Error creating payment, message obtained from external api: org.springframework.web.client.HttpServerErrorException$InternalServerError: 500 Internal Server Error: \\\"{<EOL>  \\\"requestInfo\\\": {<EOL>    \\\"status\\\": \\\"Failed\\\",<EOL>    \\\"error\\\": \\\"bank rejected payment\\\"<EOL>  },<EOL>  \\\"paymentInfo\\\": {<EOL>    \\\"amount\\\": 720,<EOL>    \\\"id\\\": \\\"a85077a5-a49e-4bb2-9236-3ae4ca4e866f\\\"<EOL>  }<EOL>}\\\"\",\n    \"data\": null\n}"
+				}
+			]
+		},
+		{
+			"name": "Query Transactions",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/transactions?bankAccountId=2023-0005&page=0&size=5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"transactions"
+					],
+					"query": [
+						{
+							"key": "bankAccountId",
+							"value": "2023-0005"
+						},
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "5"
+						},
+						{
+							"key": "amount",
+							"value": "801",
+							"disabled": true
+						},
+						{
+							"key": "startDate",
+							"value": "20231005",
+							"disabled": true
+						},
+						{
+							"key": "endDate",
+							"value": "20231006",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "200 filter by Date and amount",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://ontop-wallet-api.us-east-2.elasticbeanstalk.com/api/transactions?bankAccountId=2023-0005&page=0&size=5&amount=800&startDate=20231005&endDate=20231006",
+							"protocol": "http",
+							"host": [
+								"ontop-wallet-api",
+								"us-east-2",
+								"elasticbeanstalk",
+								"com"
+							],
+							"path": [
+								"api",
+								"transactions"
+							],
+							"query": [
+								{
+									"key": "bankAccountId",
+									"value": "2023-0005"
+								},
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "5"
+								},
+								{
+									"key": "amount",
+									"value": "800"
+								},
+								{
+									"key": "startDate",
+									"value": "20231005"
+								},
+								{
+									"key": "endDate",
+									"value": "20231006"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 05 Oct 2023 22:30:58 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"00\",\n    \"message\": \"Success\",\n    \"data\": [\n        {\n            \"status\": \"Processing\",\n            \"transactionDate\": \"2023-10-05T07:51:05.163+00:00\",\n            \"amount\": 1000,\n            \"typeAmount\": \"01\",\n            \"typeTransaction\": \"WITHDRAWAL\"\n        },\n        {\n            \"status\": \"Refunded to your wallet\",\n            \"transactionDate\": \"2023-10-05T07:50:25.360+00:00\",\n            \"amount\": 800,\n            \"typeAmount\": \"02\",\n            \"typeTransaction\": \"REFUND\"\n        },\n        {\n            \"status\": \"Refunded to your wallet\",\n            \"transactionDate\": \"2023-10-05T07:44:01.145+00:00\",\n            \"amount\": 800,\n            \"typeAmount\": \"02\",\n            \"typeTransaction\": \"REFUND\"\n        }\n    ]\n}"
+				},
+				{
+					"name": "200 filter by amount only",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://ontop-wallet-api.us-east-2.elasticbeanstalk.com/api/transactions?bankAccountId=2023-0005&page=0&size=5&amount=801",
+							"protocol": "http",
+							"host": [
+								"ontop-wallet-api",
+								"us-east-2",
+								"elasticbeanstalk",
+								"com"
+							],
+							"path": [
+								"api",
+								"transactions"
+							],
+							"query": [
+								{
+									"key": "bankAccountId",
+									"value": "2023-0005"
+								},
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "5"
+								},
+								{
+									"key": "amount",
+									"value": "801"
+								},
+								{
+									"key": "startDate",
+									"value": "20231005",
+									"disabled": true
+								},
+								{
+									"key": "endDate",
+									"value": "20231006",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 05 Oct 2023 22:31:57 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"00\",\n    \"message\": \"Success\",\n    \"data\": [\n        {\n            \"status\": \"Processing\",\n            \"transactionDate\": \"2023-10-05T07:51:05.163+00:00\",\n            \"amount\": 1000,\n            \"typeAmount\": \"01\",\n            \"typeTransaction\": \"WITHDRAWAL\"\n        }\n    ]\n}"
+				},
+				{
+					"name": "200 filter by date only",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://ontop-wallet-api.us-east-2.elasticbeanstalk.com/api/transactions?bankAccountId=2023-0005&page=0&size=5&startDate=20231005&endDate=20231006",
+							"protocol": "http",
+							"host": [
+								"ontop-wallet-api",
+								"us-east-2",
+								"elasticbeanstalk",
+								"com"
+							],
+							"path": [
+								"api",
+								"transactions"
+							],
+							"query": [
+								{
+									"key": "bankAccountId",
+									"value": "2023-0005"
+								},
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "5"
+								},
+								{
+									"key": "amount",
+									"value": "801",
+									"disabled": true
+								},
+								{
+									"key": "startDate",
+									"value": "20231005"
+								},
+								{
+									"key": "endDate",
+									"value": "20231006"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 05 Oct 2023 22:32:26 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"00\",\n    \"message\": \"Success\",\n    \"data\": [\n        {\n            \"status\": \"Refunded to your wallet\",\n            \"transactionDate\": \"2023-10-05T07:53:19.335+00:00\",\n            \"amount\": 433,\n            \"typeAmount\": \"02\",\n            \"typeTransaction\": \"REFUND\"\n        },\n        {\n            \"status\": \"Transaction Failed\",\n            \"transactionDate\": \"2023-10-05T07:53:19.050+00:00\",\n            \"amount\": 433,\n            \"typeAmount\": \"01\",\n            \"typeTransaction\": \"WITHDRAWAL\"\n        },\n        {\n            \"status\": \"Refunded to your wallet\",\n            \"transactionDate\": \"2023-10-05T07:53:09.970+00:00\",\n            \"amount\": 85,\n            \"typeAmount\": \"02\",\n            \"typeTransaction\": \"REFUND\"\n        },\n        {\n            \"status\": \"Transaction Failed\",\n            \"transactionDate\": \"2023-10-05T07:53:09.679+00:00\",\n            \"amount\": 85,\n            \"typeAmount\": \"01\",\n            \"typeTransaction\": \"WITHDRAWAL\"\n        },\n        {\n            \"status\": \"Refunded to your wallet\",\n            \"transactionDate\": \"2023-10-05T07:51:19.750+00:00\",\n            \"amount\": 286,\n            \"typeAmount\": \"02\",\n            \"typeTransaction\": \"REFUND\"\n        }\n    ]\n}"
+				},
+				{
+					"name": "404 no data",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://ontop-wallet-api.us-east-2.elasticbeanstalk.com/api/transactions?bankAccountId=2023-00999&page=0&size=5",
+							"protocol": "http",
+							"host": [
+								"ontop-wallet-api",
+								"us-east-2",
+								"elasticbeanstalk",
+								"com"
+							],
+							"path": [
+								"api",
+								"transactions"
+							],
+							"query": [
+								{
+									"key": "bankAccountId",
+									"value": "2023-00999"
+								},
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "5"
+								},
+								{
+									"key": "amount",
+									"value": "801",
+									"disabled": true
+								},
+								{
+									"key": "startDate",
+									"value": "20231005",
+									"disabled": true
+								},
+								{
+									"key": "endDate",
+									"value": "20231006",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 05 Oct 2023 22:33:09 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"03\",\n    \"message\": \"No info found for user\",\n    \"data\": null\n}"
+				},
+				{
+					"name": "200 fetch all by Account",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://ontop-wallet-api.us-east-2.elasticbeanstalk.com/api/transactions?bankAccountId=2023-0005&page=0&size=5",
+							"protocol": "http",
+							"host": [
+								"ontop-wallet-api",
+								"us-east-2",
+								"elasticbeanstalk",
+								"com"
+							],
+							"path": [
+								"api",
+								"transactions"
+							],
+							"query": [
+								{
+									"key": "bankAccountId",
+									"value": "2023-0005"
+								},
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "5"
+								},
+								{
+									"key": "amount",
+									"value": "801",
+									"disabled": true
+								},
+								{
+									"key": "startDate",
+									"value": "20231005",
+									"disabled": true
+								},
+								{
+									"key": "endDate",
+									"value": "20231006",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 05 Oct 2023 23:04:09 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"00\",\n    \"message\": \"Success\",\n    \"data\": [\n        {\n            \"status\": \"Refunded to your wallet\",\n            \"transactionDate\": \"2023-10-05T07:53:19.335+00:00\",\n            \"amount\": 433,\n            \"typeAmount\": \"02\",\n            \"typeTransaction\": \"REFUND\"\n        },\n        {\n            \"status\": \"Transaction Failed\",\n            \"transactionDate\": \"2023-10-05T07:53:19.050+00:00\",\n            \"amount\": 433,\n            \"typeAmount\": \"01\",\n            \"typeTransaction\": \"WITHDRAWAL\"\n        },\n        {\n            \"status\": \"Refunded to your wallet\",\n            \"transactionDate\": \"2023-10-05T07:53:09.970+00:00\",\n            \"amount\": 85,\n            \"typeAmount\": \"02\",\n            \"typeTransaction\": \"REFUND\"\n        },\n        {\n            \"status\": \"Transaction Failed\",\n            \"transactionDate\": \"2023-10-05T07:53:09.679+00:00\",\n            \"amount\": 85,\n            \"typeAmount\": \"01\",\n            \"typeTransaction\": \"WITHDRAWAL\"\n        },\n        {\n            \"status\": \"Refunded to your wallet\",\n            \"transactionDate\": \"2023-10-05T07:51:19.750+00:00\",\n            \"amount\": 286,\n            \"typeAmount\": \"02\",\n            \"typeTransaction\": \"REFUND\"\n        }\n    ]\n}"
+				}
+			]
+		}
+	]
+}
